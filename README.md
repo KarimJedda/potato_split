@@ -14,9 +14,11 @@ esbuild/bin/esbuild app.js --bundle --minify --outfile=bundle.js
 
 # How to 
 
-- Download bundle.html
-- Open it with Firefox / Chrome or another web browser with JavaScript on
-- Create / Restore splits
+🥔 Download bundle.html
+
+🥔 Open it with Firefox / Chrome or another web browser with JavaScript on
+
+🥔 Create / Restore splits
 
 
-🥔 🥔 🥔  
+   
