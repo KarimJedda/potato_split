@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batata Split 🥔</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🥔</text></svg>" type="image/svg+xml">
+    <script src="qrcode.min.js"></script>
+    <script src="qr-scanner.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+        
+        input[type="text"], 
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        input[disabled],
+        textarea[disabled] {
+            background-color: #f5f5f5;
+            border-color: #ddd;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        .button-card {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            margin: 5px;
+        }
+        
+        .button-card:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .button-card:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .mode-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .mode-button {
+            background: white;
+            border: none;
+            padding: 30px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+        
+        .mode-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .seed-phrase-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .seed-word {
+            position: relative;
+            background: white;
+            padding: 10px 15px;
+
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            min-width: 120px;
+            flex: 1 0 auto;
+            max-width: calc(25% - 10px);
+            box-sizing: border-box;
+        }
+
+        .seed-word-number {
+            color: #999;
+            font-size: 12px;
+            margin-right: 8px;
+            min-width: 20px;
+            flex-shrink: 0;
+        }
+
+        .seed-word input {
+            border: none;
+            outline: none;
+            padding-left: 5;
+            margin: 0;
+            font-size: 16px;
+            width: 100%;
+            background: transparent;
+            min-width: 0; /* Allows input to shrink */
+        }
+
+        .seed-word input:focus {
+            border: none;
+        }
+
+        .seed-word.filled {
+            background: #e8f5e9;
+            border: 1px solid #81c784;
+        }
+
+        #secretInput {
+            display: none;
+        }
+
+        .shares-selector {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+
+        .shares-selector label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .shares-selector-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .shares-selector input[type="range"] {
+            flex: 1;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        .shares-selector input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .shares-selector input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .shares-selector input[type="number"] {
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            color: #4CAF50;
+        }
+
+        .shares-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .shares-info strong {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-size: 2.5em;">🥔 Batata Split 🥔</h1>
+    
+    <div class="mode-selection" id="modeSelection">
+        <button class="mode-button" onclick="showSection('createSection')">🥔 Create Split</button>
+        <button class="mode-button" onclick="showSection('recoverSection')">🔄 Recover Split</button>
+    </div>
+
+    <div id="createSection" class="hidden">
+        <div class="card">
+            <h2 class="card-title">🥔 Create a new split</h2>
+            <input type="text" id="secretTitle" placeholder="Give your split a name" required>
+            <div class="seed-phrase-container">
+                <div class="seed-phrase-input" id="seedPhraseInput">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            <input type="hidden" id="secretInput">
+            <div class="shares-selector">
+                <label>Number of shares to generate:</label>
+                <div class="shares-selector-controls">
+                    <input type="range" id="sharesSlider" min="3" max="10" value="3">
+                    <input type="number" id="numShares" min="3" max="10" value="3">
+                </div>
+                <div class="shares-info">
+                    Will need <strong id="requiredShares">2</strong> shares to reconstruct the secret
+                </div>
+            </div>
+            <button id="splitBtn" class="button-card">Generate Shares 🥔</button>
+            <div id="encryptionKey"></div>
+            <div id="sharesList" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"></div>
+        </div>
+    </div>
+
+    <div id="recoverSection" class="hidden">
+        <div class="card">
+            <h2 class="card-title">🔄 Recover your secret</h2>
+            <div class="recovery-input">
+                <input type="text" id="recoveryWords" placeholder="Enter the 3 recovery words (space-separated)" style="width: 100%; margin-bottom: 20px;">
+            </div>
+            <div class="scan-option-buttons">
+                <button class="button-card" onclick="startCamera()">📷 Scan with Camera</button>
+                <button class="button-card" onclick="showFileUpload()">📁 Upload QR Images</button>
+            </div>
+            <div id="camera-container">
+                <video></video>
+                <p id="camera-status" style="text-align: center; color: #666;"></p>
+            </div>
+            <div id="fileUploadArea" style="display: none;">
+                <input type="file" id="qrFileInput" accept="image/*" multiple>
+                <div id="preview-area"></div>
+                <div id="shares-preview"></div>
+            </div>
+            <button id="recoverBtn" class="button-card">Recover Secret 🥔</button>
+            <textarea id="recoveredSecret" rows="4" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
