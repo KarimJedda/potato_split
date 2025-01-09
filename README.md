@@ -11,3 +11,12 @@ Achtung: This is beta/alpha software, don't use unless you know what you are doi
 ```
 esbuild/bin/esbuild app.js --bundle --minify --outfile=bundle.js
 ```
+
+# How to 
+
+- Download bundle.html
+- Open it with Firefox / Chrome or another web browser with JavaScript on
+- Create / Restore splits
+
+
+🥔 🥔 🥔  
