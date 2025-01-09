@@ -7,5 +7,5 @@
 # Build
 
 ```
-esbuild/bin/esbuild main.js     --bundle --minify --outfile=bundle.js
+esbuild/bin/esbuild app.js --bundle --minify --outfile=bundle.js
 ```
